@@ -1,12 +1,16 @@
 package ru.groza1337;
 
 /**
- * Класс для работы с углами, реализующий интерфейс ru.groza1337.AngleService.
+ * Класс для работы с углами, реализующий интерфейс AngleService.
  * Хранит угол как в градусах, так и в радианах и предоставляет методы для операций с углами.
  */
 public final class Angle implements AngleService {
     private final double angleInDegrees;
     private final double angleInRadians;
+
+    // Предопределенные углы
+    public static final Angle ZERO = new Angle(0); // Угол 0 градусов
+    public static final Angle PI = new Angle(180); // Угол π радиан (180 градусов)
 
     /**
      * Проверяет, находится ли угол в градусах в пределах допустимого диапазона [-360, 360].
