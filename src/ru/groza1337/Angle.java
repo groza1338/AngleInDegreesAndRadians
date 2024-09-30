@@ -7,7 +7,7 @@ package ru.groza1337;
 public final class Angle implements AngleService {
     private final double angleInDegrees;
     private final double angleInRadians;
-    private final boolean isRadians;
+    private final boolean isInRadians;
 
     // Предопределенные углы
     public static final Angle ZERO = new Angle(0, false); // Угол 0 градусов
@@ -25,15 +25,15 @@ public final class Angle implements AngleService {
     /**
      * Конструктор, принимающий угол и флаг для указания, в чем он задан (в градусах или радианах).
      * @param angle Угол в радианах или градусах, в зависимости от значения флага isRadians.
-     * @param isRadians Флаг для указания, что угол передан в радианах. Если false, угол передан в градусах.
+     * @param isInRadians Флаг для указания, что угол передан в радианах. Если false, угол передан в градусах.
      * @throws IllegalArgumentException если угол выходит за допустимые пределы.
      */
-    public Angle(double angle, boolean isRadians) {
-        if (isRadians) {
+    public Angle(double angle, boolean isInRadians) {
+        if (isInRadians) {
             if (isValid(angle)) {
                 this.angleInRadians = angle;
                 this.angleInDegrees = Math.toDegrees(angle);
-                this.isRadians = true;
+                this.isInRadians = true;
             } else {
                 throw new IllegalArgumentException("Угол должен находиться в пределах [-2π, 2π] радиан.");
             }
@@ -41,7 +41,7 @@ public final class Angle implements AngleService {
             if (isValid(angle)) {
                 this.angleInDegrees = angle;
                 this.angleInRadians = Math.toRadians(angle);
-                this.isRadians = false;
+                this.isInRadians = false;
             } else {
                 throw new IllegalArgumentException("Угол должен находиться в пределах [-360, 360] градусов.");
             }
@@ -109,7 +109,7 @@ public final class Angle implements AngleService {
      */
     @Override
     public Angle add(Angle angle) {
-        return new Angle(angleInDegrees + angle.angleInDegrees, isRadians);
+        return new Angle(angleInDegrees + angle.angleInDegrees, isInRadians);
     }
 
     /**
@@ -119,7 +119,7 @@ public final class Angle implements AngleService {
      */
     @Override
     public Angle subtract(Angle angle) {
-        return new Angle(angleInDegrees - angle.angleInDegrees, isRadians);
+        return new Angle(angleInDegrees - angle.angleInDegrees, isInRadians);
     }
 
     /**
@@ -138,6 +138,6 @@ public final class Angle implements AngleService {
      */
     @Override
     public Angle copy() {
-        return new Angle(angleInDegrees, isRadians);
+        return new Angle(angleInDegrees, isInRadians);
     }
 }
