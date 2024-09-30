@@ -7,10 +7,11 @@ package ru.groza1337;
 public final class Angle implements AngleService {
     private final double angleInDegrees;
     private final double angleInRadians;
+    private final boolean isRadians;
 
     // Предопределенные углы
-    public static final Angle ZERO = new Angle(0); // Угол 0 градусов
-    public static final Angle PI = new Angle(180); // Угол π радиан (180 градусов)
+    public static final Angle ZERO = new Angle(0, false); // Угол 0 градусов
+    public static final Angle PI = new Angle(180, true); // Угол π радиан (180 градусов)
 
     /**
      * Проверяет, находится ли угол в градусах в пределах допустимого диапазона [-360, 360].
@@ -22,35 +23,28 @@ public final class Angle implements AngleService {
     }
 
     /**
-     * Конструктор, принимающий угол в градусах.
-     * @param angleInDegrees Угол в градусах.
+     * Конструктор, принимающий угол и флаг для указания, в чем он задан (в градусах или радианах).
+     * @param angle Угол в радианах или градусах, в зависимости от значения флага isRadians.
+     * @param isRadians Флаг для указания, что угол передан в радианах. Если false, угол передан в градусах.
      * @throws IllegalArgumentException если угол выходит за допустимые пределы.
      */
-    public Angle(double angleInDegrees) {
-        if (isValid(angleInDegrees)) {
-            this.angleInDegrees = angleInDegrees;
-            this.angleInRadians = Math.toRadians(angleInDegrees);
-        } else {
-            throw new IllegalArgumentException("ru.groza1337.Angle must be between -360 and 360 degrees");
-        }
-    }
-
-    /**
-     * Конструктор, принимающий угол в радианах.
-     * @param angleInRadians Угол в радианах.
-     * @param isRadians Флаг для указания, что угол передан в радианах.
-     * @throws IllegalArgumentException если угол выходит за допустимые пределы радиан.
-     */
-    public Angle(double angleInRadians, boolean isRadians) {
+    public Angle(double angle, boolean isRadians) {
         if (isRadians) {
-            if (isValid(Math.toDegrees(angleInRadians))) {
-                this.angleInRadians = angleInRadians;
-                this.angleInDegrees = Math.toDegrees(angleInRadians);
+            if (isValid(angle)) {
+                this.angleInRadians = angle;
+                this.angleInDegrees = Math.toDegrees(angle);
+                this.isRadians = true;
             } else {
-                throw new IllegalArgumentException("ru.groza1337.Angle must be between -2π and 2π radians");
+                throw new IllegalArgumentException("Угол должен находиться в пределах [-2π, 2π] радиан.");
             }
         } else {
-            throw new IllegalArgumentException("Use the primary constructor for degrees.");
+            if (isValid(angle)) {
+                this.angleInDegrees = angle;
+                this.angleInRadians = Math.toRadians(angle);
+                this.isRadians = false;
+            } else {
+                throw new IllegalArgumentException("Угол должен находиться в пределах [-360, 360] градусов.");
+            }
         }
     }
 
@@ -115,7 +109,7 @@ public final class Angle implements AngleService {
      */
     @Override
     public Angle add(Angle angle) {
-        return new Angle(angleInDegrees + angle.angleInDegrees);
+        return new Angle(angleInDegrees + angle.angleInDegrees, isRadians);
     }
 
     /**
@@ -125,7 +119,7 @@ public final class Angle implements AngleService {
      */
     @Override
     public Angle subtract(Angle angle) {
-        return new Angle(angleInDegrees - angle.angleInDegrees);
+        return new Angle(angleInDegrees - angle.angleInDegrees, isRadians);
     }
 
     /**
@@ -144,6 +138,6 @@ public final class Angle implements AngleService {
      */
     @Override
     public Angle copy() {
-        return new Angle(angleInDegrees);
+        return new Angle(angleInDegrees, isRadians);
     }
 }
