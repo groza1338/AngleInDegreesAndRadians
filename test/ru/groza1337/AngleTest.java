@@ -8,7 +8,7 @@ class AngleTest {
     @Test
     void getDegrees() {
         Angle angle = Angle.degrees(30);
-        assertEquals(30, angle.getDegrees());
+        assertEquals(31, angle.getDegrees());
     }
 
     @Test
