@@ -1,143 +1,195 @@
 package ru.groza1337;
+import lombok.NonNull;
 
 /**
- * Класс для работы с углами, реализующий интерфейс AngleService.
- * Хранит угол как в градусах, так и в радианах и предоставляет методы для операций с углами.
+ * Угол.
  */
-public final class Angle implements AngleService {
-    private final double angleInDegrees;
-    private final double angleInRadians;
-    private final boolean isInRadians;
+public class Angle implements AngleService{
 
-    // Предопределенные углы
-    public static final Angle ZERO = new Angle(0, false); // Угол 0 градусов
-    public static final Angle PI = new Angle(180, true); // Угол π радиан (180 градусов)
+    /* =========================== Свойства =============================== */
+
+    /* ---------------------- Угол --------------------- */
 
     /**
-     * Проверяет, находится ли угол в градусах в пределах допустимого диапазона [-360, 360].
-     * @param angleInDegrees Угол в градусах.
-     * @return true, если угол допустим, иначе false.
+     * Угол в градусах.
      */
-    private static boolean isValid(double angleInDegrees) {
-        return angleInDegrees >= -360 && angleInDegrees <= 360;
-    }
+    private final double _angle;
 
     /**
-     * Конструктор, принимающий угол и флаг для указания, в чем он задан (в градусах или радианах).
-     * @param angle Угол в радианах или градусах, в зависимости от значения флага isRadians.
-     * @param isInRadians Флаг для указания, что угол передан в радианах. Если false, угол передан в градусах.
-     * @throws IllegalArgumentException если угол выходит за допустимые пределы.
-     */
-    public Angle(double angle, boolean isInRadians) {
-        if (isInRadians) {
-            if (isValid(angle)) {
-                this.angleInRadians = angle;
-                this.angleInDegrees = Math.toDegrees(angle);
-                this.isInRadians = true;
-            } else {
-                throw new IllegalArgumentException("Угол должен находиться в пределах [-2π, 2π] радиан.");
-            }
-        } else {
-            if (isValid(angle)) {
-                this.angleInDegrees = angle;
-                this.angleInRadians = Math.toRadians(angle);
-                this.isInRadians = false;
-            } else {
-                throw new IllegalArgumentException("Угол должен находиться в пределах [-360, 360] градусов.");
-            }
-        }
-    }
-
-    /**
-     * Возвращает угол в градусах.
-     * @return Угол в градусах.
+     * Представить в градусах.
      */
     @Override
-    public double getAngleInDegrees() {
-        return angleInDegrees;
+    public double getDegrees() {
+        return this._angle;
     }
 
     /**
-     * Возвращает угол в радианах.
-     * @return Угол в радианах.
+     * Представить в радианах.
      */
     @Override
-    public double getAngleInRadians() {
-        return angleInRadians;
+    public double getRadians() {
+        return toRadians(this._angle);
     }
 
+    /* =========================== Операции ============================== */
+
+    /* --------------------- Операции преобразования ---------------------- */
+
     /**
-     * Преобразует объект в строку с указанием угла в градусах и радианах.
-     * @return Строковое представление угла.
+     * Представить как строку.
+     * @return Угол в градусах в формате строки
      */
     @Override
     public String toString() {
-        return String.format("Angle: %.2f degrees (%.2f radians)", angleInDegrees, angleInRadians);
+        return this._angle + " degrees";
     }
 
     /**
-     * Определяет тип угла (острый, прямой, тупой, развернутый).
-     * @return Тип угла.
+     * Представить как строку.
+     * @return Угол в радианах в формате строки
      */
     @Override
-    public TypeOfAngle determineTypeOfAngle() {
-        double newAngleInDegrees;
-        if (angleInDegrees > 180) {
-            newAngleInDegrees = angleInDegrees - 360;
-        } else {
-            newAngleInDegrees = angleInDegrees;
+    public String toStringInRadians() {
+        return toRadians(this._angle) + " radians";
+    }
+
+    /**
+     * Перевод из радианов в градусы
+     * @param angleInRadians угол в радианах
+     * @return угол в градусах
+     */
+    private static double fromRadians(double angleInRadians) {
+        return angleInRadians * 180 / Math.PI;
+    }
+
+    /**
+     * Перевод из градусов в радианы
+     * @param angleInDegrees угол в градусах
+     * @return угол в радианах
+     */
+    private static double toRadians(double angleInDegrees) {
+        return angleInDegrees * Math.PI / 180;
+    }
+
+    /* ---------------------------- Порождение ---------------------------- */
+
+    /**
+     * Порождение угла в градусах.
+     * @param angle Угол в градусах
+     */
+    private Angle(double angle) {
+        this._angle = angle;
+    }
+
+    /**
+     * Порождение угла в градусах.
+     * @param angle Угол в градусах
+     */
+    public static Angle degrees(double angle) {
+        return new Angle(angle);
+    }
+
+    /**
+     * Порождение угла в радианах.
+     * @param angle Угол в радианах
+     */
+    public static Angle radians(double angle) {
+        return new Angle(fromRadians(angle));
+    }
+
+    /* --------------------- Предопределение углов ---------------------- */
+
+    /**
+     * Угол в 0 градусов.
+     * @return Угол в 0 градусов
+     */
+    public static Angle zero() {
+        return Angle.degrees(0); // 0
+    }
+
+    /**
+     * Угол в P радианах
+     * @return угол в P радианах
+     */
+    public static Angle P() {
+        return Angle.radians(Math.PI); // P
+    }
+
+    /* --------------------- Арифметические операции ---------------------- */
+
+    /**
+     * Сложение двух углов.
+     * @param other второе слагаемое (Угол)
+     * @return сумма двух углов
+     */
+    @Override
+    public Angle add(@NonNull Angle other) {
+        return new Angle(this._angle + other._angle);
+    }
+
+    /**
+     * Сложение двух углов.
+     * @param other второе слагаемое (угол в радианах)
+     * @return сумма двух углов
+     */
+    @Override
+    public Angle addRadians(double other) {
+        return this.add(radians(other));
+    }
+
+    /**
+     * Вычитание двух углов.
+     * @param other вычитаемое (Угол)
+     * @return разность двух углов
+     */
+    @Override
+    public Angle subtract(@NonNull Angle other) {
+        return new Angle(this._angle - other._angle);
+    }
+
+    /**
+     * Вычитание двух углов.
+     * @param other вычитаемое (угол в радианах)
+     * @return разность двух углов
+     */
+    @Override
+    public Angle subtractRadians(double other) {
+        return this.subtract(radians(other));
+    }
+
+    /* --------------------- Операции сравнения ---------------------- */
+
+    /** Сравнение двух углов.
+     *
+     * @param other другая Угол
+     * @return 0 - углы равны, -1 - первый угол меньше второго, 1 - первый угол больше второго
+     */
+    @Override
+    public int compare(@NonNull Angle other) {
+        return Double.compare(this.subtract(other)._angle, 0);
+    }
+
+    /** Сравнение углов с радианами.
+     *
+     * @param other другая Угол (в радианах)
+     * @return 0 - углы равны, -1 - первый угол меньше второго, 1 - первый угол больше второго
+     */
+    @Override
+    public int compareWithRadians(double other) {
+        return this.compare(radians(other));
+    }
+
+    /** Эквивалентность двух углов.
+     *
+     * @param other другой объект
+     * @return эквивалентны ли объекты
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Angle)) {
+            return false;
         }
-        if (newAngleInDegrees == 0) {
-            return TypeOfAngle.Unfolded;
-        }
-        else if (newAngleInDegrees > -90 && newAngleInDegrees < 90) {
-            return TypeOfAngle.Sharp;
-        } else if (newAngleInDegrees == -90 || newAngleInDegrees == 90) {
-            return TypeOfAngle.Square;
-        } else if (newAngleInDegrees > -180 && newAngleInDegrees < 180) {
-            return TypeOfAngle.Blunt;
-        } else if (newAngleInDegrees == -180 || newAngleInDegrees == 180) {
-            return TypeOfAngle.Unfolded;
-        }
-        return TypeOfAngle.Unfolded;
-    }
 
-    /**
-     * Складывает текущий угол с переданным углом.
-     * @param angle Угол для сложения.
-     * @return Новый угол как результат сложения.
-     */
-    @Override
-    public Angle add(Angle angle) {
-        return new Angle(angleInDegrees + angle.angleInDegrees, isInRadians);
-    }
-
-    /**
-     * Вычитает переданный угол из текущего угла.
-     * @param angle Угол для вычитания.
-     * @return Новый угол как результат вычитания.
-     */
-    @Override
-    public Angle subtract(Angle angle) {
-        return new Angle(angleInDegrees - angle.angleInDegrees, isInRadians);
-    }
-
-    /**
-     * Сравнивает текущий угол с переданным углом.
-     * @param angle Угол для сравнения.
-     * @return -1 если текущий угол меньше, 0 если равен, и 1 если больше.
-     */
-    @Override
-    public int compare(Angle angle) {
-        return Double.compare(this.angleInDegrees, angle.getAngleInDegrees());
-    }
-
-    /**
-     * Создает копию текущего угла.
-     * @return Копия угла.
-     */
-    @Override
-    public Angle copy() {
-        return new Angle(angleInDegrees, isInRadians);
+        return this.compare((Angle) other) == 0;
     }
 }
