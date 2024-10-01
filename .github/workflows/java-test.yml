@@ -26,4 +26,4 @@ jobs:
         run: javac -d out src/**/*.java
 
       - name: Run tests
-        run: java -cp out org.junit.runner.JUnitCore YourTestClassName
+        run: java -cp out org.junit.runner.JUnitCore AngleTest
