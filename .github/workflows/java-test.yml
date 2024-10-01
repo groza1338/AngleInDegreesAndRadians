@@ -20,10 +20,15 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '22'
-          distribution: 'temurin'  # Используем Temurin JDK 22
+          distribution: 'temurin'
 
-      - name: Compile Java code
-        run: javac -d out $(find . -name "*.java")
+      - name: Download Lombok and JUnit dependencies
+        run: |
+          curl -L -o lombok.jar https://projectlombok.org/downloads/lombok.jar
+          curl -L -o junit-platform-console-standalone.jar https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.8.0/junit-platform-console-standalone-1.8.0.jar
 
-      - name: Run tests
-        run: java -cp out org.junit.runner.JUnitCore AngleTest
+      - name: Compile Java code with Lombok
+        run: javac -cp ".:lombok.jar" -d out $(find . -name "*.java")
+
+      - name: Run JUnit tests
+        run: java -cp "out:./junit-platform-console-standalone.jar" org.junit.platform.console.ConsoleLauncher --scan-classpath
