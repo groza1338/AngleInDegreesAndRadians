@@ -23,7 +23,7 @@ jobs:
           distribution: 'temurin'  # Используем Temurin JDK 22
 
       - name: Compile Java code
-        run: javac -d out src/**/*.java
+        run: javac -d out $(find . -name "*.java")
 
       - name: Run tests
         run: java -cp out org.junit.runner.JUnitCore AngleTest
