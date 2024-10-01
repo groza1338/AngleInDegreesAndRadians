@@ -1,52 +1,69 @@
 package ru.groza1337;
 
-/**
- * Интерфейс для услуг по контракту, связанных с углами.
- * Определяет основные операции, которые должен поддерживать класс Angle.
- */
+import lombok.NonNull;
+
 public interface AngleService {
     /**
-     * Возвращает угол в градусах.
-     * @return Угол в градусах.
+     * Представить в градусах.
      */
-    double getAngleInDegrees();
+    public double getDegrees();
 
     /**
-     * Возвращает угол в радианах.
-     * @return Угол в радианах.
+     * Представить в радианах.
      */
-    double getAngleInRadians();
+    public double getRadians();
 
     /**
-     * Складывает текущий угол с переданным углом.
-     * @param angle Угол для сложения.
-     * @return Новый угол как результат сложения.
+     * Представить как строку.
+     * @return Угол в градусах в формате строки
      */
-    Angle add(Angle angle);
+    public String toString();
 
     /**
-     * Вычитает переданный угол из текущего угла.
-     * @param angle Угол для вычитания.
-     * @return Новый угол как результат вычитания.
+     * Представить как строку.
+     * @return Угол в радианах в формате строки
      */
-    Angle subtract(Angle angle);
+    public String toStringInRadians();
 
     /**
-     * Сравнивает текущий угол с переданным углом.
-     * @param angle Угол для сравнения.
-     * @return -1 если текущий угол меньше, 0 если равен, и 1 если больше.
+     * Сложение двух углов.
+     * @param other второе слагаемое (Угол)
+     * @return сумма двух углов
      */
-    int compare(Angle angle);
+    public Angle add(@NonNull Angle other);
 
     /**
-     * Создает копию текущего угла.
-     * @return Копия угла.
+     * Сложение двух углов.
+     * @param other второе слагаемое (угол в радианах)
+     * @return сумма двух углов
      */
-    Angle copy();
+    public Angle addRadians(double other);
 
     /**
-     * Определяет тип угла (острый, прямой, тупой, развернутый).
-     * @return Тип угла.
+     * Вычитание двух углов.
+     * @param other вычитаемое (Угол)
+     * @return разность двух углов
      */
-    TypeOfAngle determineTypeOfAngle();
+    public Angle subtract(@NonNull Angle other);
+
+    /**
+     * Вычитание двух углов.
+     * @param other вычитаемое (угол в радианах)
+     * @return разность двух углов
+     */
+    public Angle subtractRadians(double other);
+
+    /** Сравнение двух углов.
+     *
+     * @param other другая Угол
+     * @return 0 - углы равны, -1 - первый угол меньше второго, 1 - первый угол больше второго
+     */
+    public int compare(@NonNull Angle other);
+
+    /** Сравнение углов с радианами.
+     *
+     * @param other другая Угол (в радианах)
+     * @return 0 - углы равны, -1 - первый угол меньше второго, 1 - первый угол больше второго
+     */
+    public int compareWithRadians(double other);
 }
