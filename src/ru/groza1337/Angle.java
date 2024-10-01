@@ -41,7 +41,7 @@ public class Angle implements AngleService{
      */
     @Override
     public String toString() {
-        return this._angle + " degrees";
+        return String.format("%.2f degrees", this._angle);
     }
 
     /**
@@ -50,7 +50,18 @@ public class Angle implements AngleService{
      */
     @Override
     public String toStringInRadians() {
-        return toRadians(this._angle) + " radians";
+        return String.format("%.2f radians", toRadians(this._angle));
+    }
+
+    /**
+     * Возвращает хэш-код для данного угла.
+     * Переопределение метода необходимо для поддержания согласованности с методом {@link #equals(Object)}.
+     *
+     * @return Хэш-код угла на основе значения в градусах.
+     */
+    @Override
+    public int hashCode() {
+        return Double.hashCode(this._angle);
     }
 
     /**
@@ -166,7 +177,7 @@ public class Angle implements AngleService{
      */
     @Override
     public int compare(@NonNull Angle other) {
-        return Double.compare(this.subtract(other)._angle, 0);
+        return Double.compare(this._angle, other._angle);
     }
 
     /** Сравнение углов с радианами.
@@ -176,7 +187,7 @@ public class Angle implements AngleService{
      */
     @Override
     public int compareWithRadians(double other) {
-        return this.compare(radians(other));
+        return Double.compare(this._angle, fromRadians(other));
     }
 
     /** Эквивалентность двух углов.
