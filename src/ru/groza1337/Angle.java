@@ -1,22 +1,23 @@
 package ru.groza1337;
+
 import lombok.NonNull;
 
 /**
- * Угол.
+ * Класс для работы с углами, реализующий интерфейс AngleService.
+ * Хранит угол в градусах и предоставляет методы для выполнения операций над углами.
  */
-public class Angle implements AngleService{
+public class Angle implements AngleService {
 
     /* =========================== Свойства =============================== */
 
-    /* ---------------------- Угол --------------------- */
-
     /**
-     * Угол в градусах.
+     * Значение угла в градусах.
      */
     private final double _angle;
 
     /**
-     * Представить в градусах.
+     * Возвращает значение угла в градусах.
+     * @return Угол в градусах.
      */
     @Override
     public double getDegrees() {
@@ -24,7 +25,8 @@ public class Angle implements AngleService{
     }
 
     /**
-     * Представить в радианах.
+     * Возвращает значение угла в радианах.
+     * @return Угол в радианах.
      */
     @Override
     public double getRadians() {
@@ -33,11 +35,9 @@ public class Angle implements AngleService{
 
     /* =========================== Операции ============================== */
 
-    /* --------------------- Операции преобразования ---------------------- */
-
     /**
-     * Представить как строку.
-     * @return Угол в градусах в формате строки
+     * Возвращает строковое представление угла в градусах.
+     * @return Угол в градусах в формате строки.
      */
     @Override
     public String toString() {
@@ -45,8 +45,8 @@ public class Angle implements AngleService{
     }
 
     /**
-     * Представить как строку.
-     * @return Угол в радианах в формате строки
+     * Возвращает строковое представление угла в радианах.
+     * @return Угол в радианах в формате строки.
      */
     @Override
     public String toStringInRadians() {
@@ -65,18 +65,18 @@ public class Angle implements AngleService{
     }
 
     /**
-     * Перевод из радианов в градусы
-     * @param angleInRadians угол в радианах
-     * @return угол в градусах
+     * Преобразует угол из радиан в градусы.
+     * @param angleInRadians Угол в радианах.
+     * @return Угол в градусах.
      */
     private static double fromRadians(double angleInRadians) {
         return angleInRadians * 180 / Math.PI;
     }
 
     /**
-     * Перевод из градусов в радианы
-     * @param angleInDegrees угол в градусах
-     * @return угол в радианах
+     * Преобразует угол из градусов в радианы.
+     * @param angleInDegrees Угол в градусах.
+     * @return Угол в радианах.
      */
     private static double toRadians(double angleInDegrees) {
         return angleInDegrees * Math.PI / 180;
@@ -85,24 +85,26 @@ public class Angle implements AngleService{
     /* ---------------------------- Порождение ---------------------------- */
 
     /**
-     * Порождение угла в градусах.
-     * @param angle Угол в градусах
+     * Приватный конструктор для создания объекта угла.
+     * @param angle Угол в градусах.
      */
     private Angle(double angle) {
         this._angle = angle;
     }
 
     /**
-     * Порождение угла в градусах.
-     * @param angle Угол в градусах
+     * Создает угол в градусах.
+     * @param angle Угол в градусах.
+     * @return Объект угла.
      */
     public static Angle degrees(double angle) {
         return new Angle(angle);
     }
 
     /**
-     * Порождение угла в радианах.
-     * @param angle Угол в радианах
+     * Создает угол в радианах.
+     * @param angle Угол в радианах.
+     * @return Объект угла.
      */
     public static Angle radians(double angle) {
         return new Angle(fromRadians(angle));
@@ -111,27 +113,27 @@ public class Angle implements AngleService{
     /* --------------------- Предопределение углов ---------------------- */
 
     /**
-     * Угол в 0 градусов.
-     * @return Угол в 0 градусов
+     * Возвращает угол в 0 градусов.
+     * @return Угол в 0 градусов.
      */
     public static Angle zero() {
-        return Angle.degrees(0); // 0
+        return Angle.degrees(0);
     }
 
     /**
-     * Угол в P радианах
-     * @return угол в P радианах
+     * Возвращает угол в PI радиан.
+     * @return Угол в PI радиан.
      */
     public static Angle P() {
-        return Angle.radians(Math.PI); // P
+        return Angle.radians(Math.PI);
     }
 
     /* --------------------- Арифметические операции ---------------------- */
 
     /**
-     * Сложение двух углов.
-     * @param other второе слагаемое (Угол)
-     * @return сумма двух углов
+     * Складывает текущий угол с переданным углом.
+     * @param other Угол для сложения.
+     * @return Новый угол как результат сложения.
      */
     @Override
     public Angle add(@NonNull Angle other) {
@@ -139,9 +141,9 @@ public class Angle implements AngleService{
     }
 
     /**
-     * Сложение двух углов.
-     * @param other второе слагаемое (угол в радианах)
-     * @return сумма двух углов
+     * Складывает текущий угол с переданным углом в радианах.
+     * @param other Угол в радианах для сложения.
+     * @return Новый угол как результат сложения.
      */
     @Override
     public Angle addRadians(double other) {
@@ -149,9 +151,9 @@ public class Angle implements AngleService{
     }
 
     /**
-     * Вычитание двух углов.
-     * @param other вычитаемое (Угол)
-     * @return разность двух углов
+     * Вычитает переданный угол из текущего угла.
+     * @param other Угол для вычитания.
+     * @return Новый угол как результат вычитания.
      */
     @Override
     public Angle subtract(@NonNull Angle other) {
@@ -159,9 +161,9 @@ public class Angle implements AngleService{
     }
 
     /**
-     * Вычитание двух углов.
-     * @param other вычитаемое (угол в радианах)
-     * @return разность двух углов
+     * Вычитает переданный угол в радианах из текущего угла.
+     * @param other Угол в радианах для вычитания.
+     * @return Новый угол как результат вычитания.
      */
     @Override
     public Angle subtractRadians(double other) {
@@ -170,37 +172,36 @@ public class Angle implements AngleService{
 
     /* --------------------- Операции сравнения ---------------------- */
 
-    /** Сравнение двух углов.
-     *
-     * @param other другая Угол
-     * @return 0 - углы равны, -1 - первый угол меньше второго, 1 - первый угол больше второго
+    /**
+     * Сравнивает текущий угол с переданным углом.
+     * @param other Угол для сравнения.
+     * @return 0 - если углы равны, -1 - если текущий угол меньше, 1 - если больше.
      */
     @Override
     public int compare(@NonNull Angle other) {
         return Double.compare(this._angle, other._angle);
     }
 
-    /** Сравнение углов с радианами.
-     *
-     * @param other другая Угол (в радианах)
-     * @return 0 - углы равны, -1 - первый угол меньше второго, 1 - первый угол больше второго
+    /**
+     * Сравнивает текущий угол с переданным углом в радианах.
+     * @param other Угол в радианах для сравнения.
+     * @return 0 - если углы равны, -1 - если текущий угол меньше, 1 - если больше.
      */
     @Override
     public int compareWithRadians(double other) {
         return Double.compare(this._angle, fromRadians(other));
     }
 
-    /** Эквивалентность двух углов.
-     *
-     * @param other другой объект
-     * @return эквивалентны ли объекты
+    /**
+     * Проверяет эквивалентность двух углов.
+     * @param other Объект для сравнения.
+     * @return true, если углы эквивалентны; false в противном случае.
      */
     @Override
     public boolean equals(Object other) {
         if (!(other instanceof Angle)) {
             return false;
         }
-
         return this.compare((Angle) other) == 0;
     }
 }
