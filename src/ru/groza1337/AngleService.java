@@ -1,10 +1,8 @@
 package ru.groza1337;
 
-import lombok.NonNull;
-
 /**
- * Интерфейс для работы с углами, представляющий основные операции над углами,
- * такие как сложение, вычитание, сравнение и преобразование угла в строку.
+ * Интерфейс для работы с углами.
+ * Описывает операции над углами, такие как сложение, вычитание, сравнение и преобразование угла в строку.
  */
 public interface AngleService {
 
@@ -12,65 +10,71 @@ public interface AngleService {
      * Возвращает значение угла в градусах.
      * @return Угол в градусах.
      */
-    public double getDegrees();
+    double getDegrees();
 
     /**
      * Возвращает значение угла в радианах.
      * @return Угол в радианах.
      */
-    public double getRadians();
+    double getRadians();
 
     /**
      * Возвращает строковое представление угла в градусах.
      * @return Угол в градусах в формате строки.
      */
-    public String toString();
+    String toString();
 
     /**
      * Возвращает строковое представление угла в радианах.
      * @return Угол в радианах в формате строки.
      */
-    public String toStringInRadians();
+    String toStringInRadians();
 
     /**
      * Складывает текущий угол с переданным углом.
      * @param other Угол для сложения.
      * @return Новый угол как результат сложения.
      */
-    public Angle add(@NonNull Angle other);
+    Angle add(Angle other);
 
     /**
      * Складывает текущий угол с переданным углом в радианах.
      * @param other Угол в радианах для сложения.
      * @return Новый угол как результат сложения.
      */
-    public Angle addRadians(double other);
+    Angle addRadians(double other);
 
     /**
      * Вычитает переданный угол из текущего угла.
      * @param other Угол для вычитания.
      * @return Новый угол как результат вычитания.
      */
-    public Angle subtract(@NonNull Angle other);
+    Angle subtract(Angle other);
 
     /**
      * Вычитает переданный угол в радианах из текущего угла.
      * @param other Угол в радианах для вычитания.
      * @return Новый угол как результат вычитания.
      */
-    public Angle subtractRadians(double other);
+    Angle subtractRadians(double other);
 
     /**
      * Сравнивает текущий угол с переданным углом.
      * @param other Угол для сравнения.
      * @return 0 - если углы равны, -1 - если текущий угол меньше, 1 - если больше.
      */
-    public int compare(@NonNull Angle other);
+    int compare(Angle other);
 
     /**
-     * Сравнивает текущий угол с переданным углом в радианах.
+     * Сравнивает текущий угол с переданным значением в радианах.
      * @param other Угол в радианах для сравнения.
      * @return 0 - если углы равны, -1 - если текущий угол меньше, 1 - если больше.
      */
-    public int compareWithRadians(double other);
+    int compareWithRadians(double other);
+
+    /**
+     * Определяет тип угла (острый, тупой, прямой и т.д.).
+     * @return Тип угла.
+     */
+    AngleType determineAngleType();
 }

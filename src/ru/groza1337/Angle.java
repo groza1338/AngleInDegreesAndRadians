@@ -1,7 +1,5 @@
 package ru.groza1337;
 
-import lombok.NonNull;
-
 /**
  * Класс для работы с углами, реализующий интерфейс AngleService.
  * Хранит угол в градусах и предоставляет методы для выполнения операций над углами.
@@ -14,6 +12,42 @@ public class Angle implements AngleService {
      * Значение угла в градусах.
      */
     private final double _angle;
+
+    /* =========================== Операции ============================== */
+
+    /**
+     * Преобразует угол из радианов в градусы и проверяет его на диапазон [-360, 360].
+     * @param angleInRadians Угол в радианах.
+     * @return Угол в градусах.
+     */
+    private static double fromRadians(double angleInRadians) {
+        double degrees = angleInRadians * 180 / Math.PI;
+        if (!isValidDegrees(degrees)) {
+            throw new IllegalArgumentException("Угол должен быть в диапазоне [-360, 360] градусов.");
+        }
+        return degrees;
+    }
+
+    /**
+     * Преобразует угол из градусов в радианы и проверяет его на диапазон [-2π, 2π].
+     * @param angleInDegrees Угол в градусах.
+     * @return Угол в радианах.
+     */
+    private static double toRadians(double angleInDegrees) {
+        if (!isValidDegrees(angleInDegrees)) {
+            throw new IllegalArgumentException("Угол должен быть в диапазоне [-360, 360] градусов.");
+        }
+        return angleInDegrees * Math.PI / 180;
+    }
+
+    /**
+     * Проверяет, находится ли угол в диапазоне [-360, 360] градусов.
+     * @param angle Угол в градусах.
+     * @return true, если угол в диапазоне, иначе false.
+     */
+    private static boolean isValidDegrees(double angle) {
+        return angle >= -360 && angle <= 360;
+    }
 
     /**
      * Возвращает значение угла в градусах.
@@ -33,8 +67,6 @@ public class Angle implements AngleService {
         return toRadians(this._angle);
     }
 
-    /* =========================== Операции ============================== */
-
     /**
      * Возвращает строковое представление угла в градусах.
      * @return Угол в градусах в формате строки.
@@ -53,35 +85,6 @@ public class Angle implements AngleService {
         return String.format("%.2f radians", toRadians(this._angle));
     }
 
-    /**
-     * Возвращает хэш-код для данного угла.
-     * Переопределение метода необходимо для поддержания согласованности с методом {@link #equals(Object)}.
-     *
-     * @return Хэш-код угла на основе значения в градусах.
-     */
-    @Override
-    public int hashCode() {
-        return Double.hashCode(this._angle);
-    }
-
-    /**
-     * Преобразует угол из радиан в градусы.
-     * @param angleInRadians Угол в радианах.
-     * @return Угол в градусах.
-     */
-    private static double fromRadians(double angleInRadians) {
-        return angleInRadians * 180 / Math.PI;
-    }
-
-    /**
-     * Преобразует угол из градусов в радианы.
-     * @param angleInDegrees Угол в градусах.
-     * @return Угол в радианах.
-     */
-    private static double toRadians(double angleInDegrees) {
-        return angleInDegrees * Math.PI / 180;
-    }
-
     /* ---------------------------- Порождение ---------------------------- */
 
     /**
@@ -89,6 +92,9 @@ public class Angle implements AngleService {
      * @param angle Угол в градусах.
      */
     private Angle(double angle) {
+        if (!isValidDegrees(angle)) {
+            throw new IllegalArgumentException("Угол должен быть в диапазоне [-360, 360] градусов.");
+        }
         this._angle = angle;
     }
 
@@ -110,24 +116,6 @@ public class Angle implements AngleService {
         return new Angle(fromRadians(angle));
     }
 
-    /* --------------------- Предопределение углов ---------------------- */
-
-    /**
-     * Возвращает угол в 0 градусов.
-     * @return Угол в 0 градусов.
-     */
-    public static Angle zero() {
-        return Angle.degrees(0);
-    }
-
-    /**
-     * Возвращает угол в PI радиан.
-     * @return Угол в PI радиан.
-     */
-    public static Angle P() {
-        return Angle.radians(Math.PI);
-    }
-
     /* --------------------- Арифметические операции ---------------------- */
 
     /**
@@ -136,7 +124,7 @@ public class Angle implements AngleService {
      * @return Новый угол как результат сложения.
      */
     @Override
-    public Angle add(@NonNull Angle other) {
+    public Angle add(Angle other) {
         return new Angle(this._angle + other._angle);
     }
 
@@ -156,12 +144,12 @@ public class Angle implements AngleService {
      * @return Новый угол как результат вычитания.
      */
     @Override
-    public Angle subtract(@NonNull Angle other) {
+    public Angle subtract(Angle other) {
         return new Angle(this._angle - other._angle);
     }
 
     /**
-     * Вычитает переданный угол в радианах из текущего угла.
+     * Вычитает текущий угол с переданным углом в радианах.
      * @param other Угол в радианах для вычитания.
      * @return Новый угол как результат вычитания.
      */
@@ -178,30 +166,71 @@ public class Angle implements AngleService {
      * @return 0 - если углы равны, -1 - если текущий угол меньше, 1 - если больше.
      */
     @Override
-    public int compare(@NonNull Angle other) {
+    public int compare(Angle other) {
         return Double.compare(this._angle, other._angle);
     }
 
     /**
-     * Сравнивает текущий угол с переданным углом в радианах.
+     * Сравнивает текущий угол с переданным значением в радианах.
      * @param other Угол в радианах для сравнения.
      * @return 0 - если углы равны, -1 - если текущий угол меньше, 1 - если больше.
      */
     @Override
     public int compareWithRadians(double other) {
-        return Double.compare(this._angle, fromRadians(other));
+        return this.compare(radians(other));
     }
+
+    /* --------------------- Определение типа угла ---------------------- */
+
+    /**
+     * Определяет тип угла на основе его значения в градусах.
+     * @return Тип угла (острый, тупой, прямой и т.д.).
+     */
+    @Override
+    public AngleType determineAngleType() {
+        double degrees = this.getDegrees();
+        if (degrees < 0) {
+            degrees += 360;  // Учитываем отрицательные углы, делаем их положительными
+        }
+
+        if (degrees == 90) {
+            return AngleType.RIGHT;       // Прямой угол
+        } else if (degrees < 90) {
+            return AngleType.ACUTE;       // Острый угол
+        } else if (degrees == 180) {
+            return AngleType.STRAIGHT;    // Развернутый угол
+        } else if (degrees < 180) {
+            return AngleType.OBTUSE;      // Тупой угол
+        } else if (degrees == 360) {
+            return AngleType.FULL;        // Полный круг
+        } else {
+            return AngleType.REFLEX;      // Рефлексный угол
+        }
+    }
+
+    /* --------------------- Эквивалентность и хэш-код ---------------------- */
 
     /**
      * Проверяет эквивалентность двух углов.
-     * @param other Объект для сравнения.
-     * @return true, если углы эквивалентны; false в противном случае.
+     * @param other Другой объект для сравнения.
+     * @return true, если углы равны, иначе false.
      */
     @Override
     public boolean equals(Object other) {
         if (!(other instanceof Angle)) {
             return false;
         }
+
         return this.compare((Angle) other) == 0;
     }
+
+    /**
+     * Возвращает хэш-код для данного угла.
+     * @return Хэш-код угла на основе значения в градусах.
+     */
+    @Override
+    public int hashCode() {
+        return Double.hashCode(this._angle);
+    }
 }
+
