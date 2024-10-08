@@ -26,7 +26,7 @@ public class AngleTest {
                 "-360, 'Negative full rotation angle'"
         })
         void testAngleCreation_validDegrees(double degrees) {
-            Angle angle = Angle.degrees(degrees);
+            Angle.degrees(degrees);
         }
 
         /**
@@ -41,7 +41,7 @@ public class AngleTest {
                 "-6.28318, 'Negative full rotation in radians'"
         })
         void testAngleCreation_validRadians(double radians) {
-            Angle angle = Angle.radians(radians);
+            Angle.radians(radians);
         }
 
         /**
