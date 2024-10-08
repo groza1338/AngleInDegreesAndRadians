@@ -25,7 +25,7 @@ public class AngleTest {
                 "360, 'Full rotation angle'",
                 "-360, 'Negative full rotation angle'"
         })
-        void testAngleCreation_validDegrees(double degrees, String description) {
+        void testAngleCreation_validDegrees(double degrees) {
             Angle angle = Angle.degrees(degrees);
         }
 
@@ -40,7 +40,7 @@ public class AngleTest {
                 "6.28318, 'Full rotation in radians'",
                 "-6.28318, 'Negative full rotation in radians'"
         })
-        void testAngleCreation_validRadians(double radians, String description) {
+        void testAngleCreation_validRadians(double radians) {
             Angle angle = Angle.radians(radians);
         }
 
@@ -198,13 +198,11 @@ public class AngleTest {
                 "360, 1, 'Exception', 'Сложение углов за пределами диапазона (ожидаем IllegalArgumentException)'"
         })
         void testAdditionDegrees(double angle1, double angle2, String expected, String description) {
+            Angle a1 = Angle.degrees(angle1);
+            Angle a2 = Angle.degrees(angle2);
             if (expected.equals("Exception")) {
-                Angle a1 = Angle.degrees(angle1);
-                Angle a2 = Angle.degrees(angle2);
                 assertThrows(IllegalArgumentException.class, () -> a1.add(a2), description);
             } else {
-                Angle a1 = Angle.degrees(angle1);
-                Angle a2 = Angle.degrees(angle2);
                 Angle result = a1.add(a2);
                 assertEquals(Double.parseDouble(expected), result.getDegrees(), 0.01, description);
             }
@@ -220,11 +218,10 @@ public class AngleTest {
                 "6.28318, 0.1, 'Exception', 'Сложение углов за пределами диапазона (ожидаем IllegalArgumentException)'"
         })
         void testAdditionRadians(double angle1, double angle2, String expected, String description) {
+            Angle a1 = Angle.radians(angle1);
             if (expected.equals("Exception")) {
-                Angle a1 = Angle.radians(angle1);
                 assertThrows(IllegalArgumentException.class, () -> a1.addRadians(angle2), description);
             } else {
-                Angle a1 = Angle.radians(angle1);
                 Angle result = a1.addRadians(angle2);
                 assertEquals(Double.parseDouble(expected), result.getRadians(), 0.01, description);
             }
@@ -244,13 +241,11 @@ public class AngleTest {
                 "-360, 1, 'Exception', 'Вычитание углов за пределами диапазона (ожидаем IllegalArgumentException)'"
         })
         void testSubtractionDegrees(double angle1, double angle2, String expected, String description) {
+            Angle a1 = Angle.degrees(angle1);
+            Angle a2 = Angle.degrees(angle2);
             if (expected.equals("Exception")) {
-                Angle a1 = Angle.degrees(angle1);
-                Angle a2 = Angle.degrees(angle2);
                 assertThrows(IllegalArgumentException.class, () -> a1.subtract(a2), description);
             } else {
-                Angle a1 = Angle.degrees(angle1);
-                Angle a2 = Angle.degrees(angle2);
                 Angle result = a1.subtract(a2);
                 assertEquals(Double.parseDouble(expected), result.getDegrees(), 0.01, description);
             }
@@ -265,11 +260,10 @@ public class AngleTest {
                 "-6.28318, 0.1, 'Exception', 'Вычитание углов за пределами диапазона (ожидаем IllegalArgumentException)'"
         })
         void testSubtractionRadians(double angle1, double angle2, String expected, String description) {
+            Angle a1 = Angle.radians(angle1);
             if (expected.equals("Exception")) {
-                Angle a1 = Angle.radians(angle1);
                 assertThrows(IllegalArgumentException.class, () -> a1.subtractRadians(angle2), description);
             } else {
-                Angle a1 = Angle.radians(angle1);
                 Angle result = a1.subtractRadians(angle2);
                 assertEquals(Double.parseDouble(expected), result.getRadians(), 0.01, description);
             }
@@ -621,7 +615,7 @@ public class AngleTest {
     class FormulaTests {
 
         /**
-         * Тест для проверки формулы перевода из радиан в градусы.
+         * Тест для проверки формулы перевода из радианов в градусы.
          */
         @ParameterizedTest(name = "Проверка формулы радианы -> градусы: {0} радиан = {1} градусов")
         @CsvSource({
