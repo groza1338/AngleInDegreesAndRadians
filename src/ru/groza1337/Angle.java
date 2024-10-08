@@ -5,7 +5,7 @@ import java.util.Locale;
  * Класс для работы с углами, реализующий интерфейс AngleService.
  * Хранит угол в градусах и предоставляет методы для выполнения операций над углами.
  */
-public class Angle implements AngleService {
+final public class Angle implements AngleService {
 
     /* =========================== Свойства =============================== */
 
@@ -13,6 +13,10 @@ public class Angle implements AngleService {
      * Значение угла в градусах.
      */
     private final double _angle;
+
+    public static Angle ZERO_Angle = Angle.degrees(0);
+
+    public static Angle P_Angle = Angle.radians(Math.PI);
 
     /* =========================== Операции ============================== */
 

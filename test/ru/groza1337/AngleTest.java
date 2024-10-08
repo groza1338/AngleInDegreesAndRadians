@@ -672,4 +672,54 @@ public class AngleTest {
         }
     }
 
+    // **Статические углы**: Проверка статических углов ZERO_Angle и P_Angle
+    @Nested
+    class StaticAngleTests {
+
+        /**
+         * Проверка, что угол ZERO_Angle инициализируется со значением 0 градусов.
+         */
+        @Test
+        void testZeroAngle() {
+            assertEquals(0.0, Angle.ZERO_Angle.getDegrees(), 0.01, "ZERO_Angle должен быть равен 0 градусов.");
+            assertEquals(0.0, Angle.ZERO_Angle.getRadians(), 0.01, "ZERO_Angle должен быть равен 0 радиан.");
+        }
+
+        /**
+         * Проверка, что угол P_Angle инициализируется со значением π градусов (около 3.14159 радиан).
+         */
+        @Test
+        void testPAngle() {
+            assertEquals(180.0, Angle.P_Angle.getDegrees(), 0.01, "P_Angle должен быть равен 180 градусов.");
+            assertEquals(Math.PI, Angle.P_Angle.getRadians(), 0.01, "P_Angle должен быть равен π радиан.");
+        }
+
+        /**
+         * Проверка равенства углов между ZERO_Angle и углом, созданным с 0 градусов.
+         */
+        @Test
+        void testZeroAngleEquality() {
+            Angle zeroAngle = Angle.degrees(0);
+            assertEquals(Angle.ZERO_Angle, zeroAngle, "ZERO_Angle должен быть равен углу, созданному с 0 градусов.");
+        }
+
+        /**
+         * Проверка равенства углов между P_Angle и углом, созданным с π радиан.
+         */
+        @Test
+        void testPAngleEquality() {
+            Angle pAngleFromRadians = Angle.radians(Math.PI);
+            assertEquals(Angle.P_Angle, pAngleFromRadians, "P_Angle должен быть равен углу, созданному с π радиан.");
+        }
+
+        /**
+         * Проверка преобразования статических углов в строку.
+         */
+        @Test
+        void testToStringForStaticAngles() {
+            assertEquals("0.00 degrees", Angle.ZERO_Angle.toString(), "Строковое представление ZERO_Angle должно быть '0.00 degrees'.");
+            assertEquals("180.00 degrees", Angle.P_Angle.toString(), "Строковое представление P_Angle должно быть '180.00 degrees'.");
+        }
+    }
+
 }
