@@ -1,4 +1,5 @@
 package ru.groza1337;
+import java.util.Locale;
 
 /**
  * Класс для работы с углами, реализующий интерфейс AngleService.
@@ -73,7 +74,7 @@ public class Angle implements AngleService {
      */
     @Override
     public String toString() {
-        return String.format("%.2f degrees", this._angle);
+        return String.format(Locale.US, "%.2f degrees", this._angle);
     }
 
     /**
@@ -82,7 +83,7 @@ public class Angle implements AngleService {
      */
     @Override
     public String toStringInRadians() {
-        return String.format("%.2f radians", toRadians(this._angle));
+        return String.format(Locale.US, "%.2f radians", toRadians(this._angle));
     }
 
     /* ---------------------------- Порождение ---------------------------- */
