@@ -309,23 +309,6 @@ public class AngleTest {
             Angle a2 = Angle.radians(angle2);
             assertEquals(expected, a1.compare(a2), description);
         }
-
-        /**
-         * Тесты для метода compareWithRadians.
-         */
-        @ParameterizedTest(name = "Сравнение углов с радианами: {0} и {1}")
-        @CsvSource({
-                "0, 0, 0, 'Сравнение нулевых углов, результат — равны'",
-                "180, 3.141592653589793, 0, 'Сравнение 180° и π радиан, результат — равны'",
-                "-180, -3.141592653589793, 0, 'Сравнение -180° и -π радиан, результат — равны'",
-                "180, -3.14159, 1, 'Сравнение 180° и -π радиан, результат — первый угол больше'",
-                "-360, 6.28318, -1, 'Сравнение -360° и 2π радиан, результат — второй угол больше'",
-                "0, 6.28318, -1, 'Сравнение угла 0 и угла на границе 2π радиан'"
-        })
-        void testCompareWithRadians(double degrees, double radians, int expected, String description) {
-            Angle angleDegrees = Angle.degrees(degrees);
-            assertEquals(expected, angleDegrees.compareWithRadians(radians), description);
-        }
     }
 
     // 7. **Тип угла**: Проверка метода determineAngleType для определения типа угла

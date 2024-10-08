@@ -5,7 +5,7 @@ import java.util.Locale;
  * Класс для работы с углами, реализующий интерфейс AngleService.
  * Хранит угол в градусах и предоставляет методы для выполнения операций над углами.
  */
-final public class Angle implements AngleService {
+final public class Angle {
 
     /* =========================== Свойства =============================== */
 
@@ -58,7 +58,6 @@ final public class Angle implements AngleService {
      * Возвращает значение угла в градусах.
      * @return Угол в градусах.
      */
-    @Override
     public double getDegrees() {
         return this._angle;
     }
@@ -67,7 +66,6 @@ final public class Angle implements AngleService {
      * Возвращает значение угла в радианах.
      * @return Угол в радианах.
      */
-    @Override
     public double getRadians() {
         return toRadians(this._angle);
     }
@@ -85,7 +83,6 @@ final public class Angle implements AngleService {
      * Возвращает строковое представление угла в радианах.
      * @return Угол в радианах в формате строки.
      */
-    @Override
     public String toStringInRadians() {
         return String.format(Locale.US, "%.2f radians", toRadians(this._angle));
     }
@@ -128,7 +125,6 @@ final public class Angle implements AngleService {
      * @param other Угол для сложения.
      * @return Новый угол как результат сложения.
      */
-    @Override
     public Angle add(Angle other) {
         return new Angle(this._angle + other._angle);
     }
@@ -138,7 +134,6 @@ final public class Angle implements AngleService {
      * @param other Угол в радианах для сложения.
      * @return Новый угол как результат сложения.
      */
-    @Override
     public Angle addRadians(double other) {
         return this.add(radians(other));
     }
@@ -148,7 +143,6 @@ final public class Angle implements AngleService {
      * @param other Угол для вычитания.
      * @return Новый угол как результат вычитания.
      */
-    @Override
     public Angle subtract(Angle other) {
         return new Angle(this._angle - other._angle);
     }
@@ -158,7 +152,6 @@ final public class Angle implements AngleService {
      * @param other Угол в радианах для вычитания.
      * @return Новый угол как результат вычитания.
      */
-    @Override
     public Angle subtractRadians(double other) {
         return this.subtract(radians(other));
     }
@@ -170,20 +163,10 @@ final public class Angle implements AngleService {
      * @param other Угол для сравнения.
      * @return 0 - если углы равны, -1 - если текущий угол меньше, 1 - если больше.
      */
-    @Override
     public int compare(Angle other) {
         return Double.compare(this._angle, other._angle);
     }
 
-    /**
-     * Сравнивает текущий угол с переданным значением в радианах.
-     * @param other Угол в радианах для сравнения.
-     * @return 0 - если углы равны, -1 - если текущий угол меньше, 1 - если больше.
-     */
-    @Override
-    public int compareWithRadians(double other) {
-        return this.compare(radians(other));
-    }
 
     /* --------------------- Определение типа угла ---------------------- */
 
@@ -191,7 +174,6 @@ final public class Angle implements AngleService {
      * Определяет тип угла на основе его значения в градусах.
      * @return Тип угла (острый, тупой, прямой и т.д.).
      */
-    @Override
     public AngleType determineAngleType() {
         double degrees = this.getDegrees();
         if (degrees < 0) {
